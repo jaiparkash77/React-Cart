@@ -11,9 +11,56 @@ class CartItem extends Component {
             img: ''
         }
         // this.increaseQuantity = this.increaseQuantity.bind(this);
+        // this.testing();
     }
+
+    // testing(){
+    //     const promise = new Promise((resolve, reject)=>{
+    //         setTimeout(() => {
+    //             resolve('done');
+    //         }, 5000);
+    //     })
+
+    //     promise.then(()=>{
+    //         // setStates acts like a synchronous call
+    //         this.setState({ qty: this.state.qty +10 });
+    //         this.setState({ qty: this.state.qty +10 });
+    //         this.setState({ qty: this.state.qty +10 });
+
+    //         console.log('state', this.state);
+    //     });
+    // }
+
+
     increaseQuantity = () => {
-        console.log('test',this.state);
+        // this.state.qty += 1;
+        // console.log('test',this.state);
+        // setState form 1 -> used when previous state not required
+        // this.setState({
+        //     qty: this.state.qty +1
+        // });
+
+        // setState form 2 -> used when previous state required
+        this.setState((prevState)=>{
+            return {
+                qty: prevState.qty + 1
+            }
+        });
+    }
+
+    decreaseQuantity = () => {
+        const { qty } = this.state;
+
+        if(qty === 1 ){
+            return;
+        }
+
+        this.setState((prevState)=>{
+            
+            return{
+                qty: prevState.qty -1
+            }
+        })
     }
     render() {
         const { title, price, qty, img } = this.state;
@@ -28,8 +75,8 @@ class CartItem extends Component {
                     <div style={{ color: '#777' }}>Qty. {qty}</div>
                     <div className="cart-item-actions">
                         {/* Buttons */}
-                        <img alt="increase" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992651.png" onClick={this.increaseQuantity.bind(this)} />
-                        <img alt="decrease" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992683.png" />
+                        <img alt="increase" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992651.png" onClick={this.increaseQuantity} />
+                        <img alt="decrease" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992683.png" onClick={this.decreaseQuantity} />
                         <img alt="delete" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/484/484662.png" />
                     </div>
                 </div>
