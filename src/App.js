@@ -1,7 +1,7 @@
 import Cart from "./Cart";
 import Navbar from "./Navbar"
 import React from 'react'
-import { collection, getDocs, onSnapshot, addDoc } from "firebase/firestore"; 
+import { collection, getDocs, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore"; 
 import { getFirestore } from "firebase/firestore";
 
 class App extends React.Component {
@@ -70,10 +70,22 @@ class App extends React.Component {
       const { products } = this.state;
       const index = products.indexOf(product);
 
-      products[index].qty += 1;
+      // products[index].qty += 1;
 
-      this.setState({
-          products
+      // this.setState({
+      //     products
+      // })
+
+      const docRef = doc(this.db,"products",products[index].id);
+
+      updateDoc(docRef,{
+        qty: products[index].qty +1
+      })
+      .then(()=>{
+        console.log("Updated Data Successfully");
+      })
+      .catch((err)=>{
+        console.log("Error : ", err);
       })
   }
 
@@ -84,21 +96,44 @@ class App extends React.Component {
       if(products[index].qty<=1){
           return;
       }
-      products[index].qty -= 1;
+      // products[index].qty -= 1;
 
-      this.setState({
-          products
+      // this.setState({
+      //     products
+      // })
+
+      const docRef = doc(this.db,"products",products[index].id);
+
+      updateDoc(docRef,{
+        qty: products[index].qty -1
+      })
+      .then(()=>{
+        console.log("Updated Data Successfully");
+      })
+      .catch((err)=>{
+        console.log("Error : ", err);
       })
   }
 
   handleDeleteProduct = (id) => {
       const { products } = this.state;
 
-      const items = products.filter((item)=> item.id !== id );
+      // const items = products.filter((item)=> item.id !== id );
 
-      this.setState({
-          products: items
+      // this.setState({
+      //     products: items
+      // })
+
+      const docRef = doc(this.db,"products",id);
+      deleteDoc(docRef)
+      .then(()=>{
+        console.log("Deleted Successfuly");
       })
+      .catch((err)=>{
+        console.log("Error: " ,err)
+      })
+
+
   }
 
   getCartCount = () => {
