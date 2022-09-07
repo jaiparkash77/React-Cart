@@ -1,7 +1,7 @@
 import Cart from "./Cart";
 import Navbar from "./Navbar"
 import React from 'react'
-import { collection, getDocs, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore"; 
+import { collection, getDocs, onSnapshot, addDoc, doc, updateDoc, deleteDoc, where, query, orderBy } from "firebase/firestore"; 
 import { getFirestore } from "firebase/firestore";
 
 class App extends React.Component {
@@ -42,7 +42,14 @@ class App extends React.Component {
 
     // Reflecting Data in realtime
     // const db = getFirestore(this.props.app); 
-    onSnapshot(collection(this.db, 'products'), (snapshot)=>{
+
+    const colRef = collection(this.db, 'products' );
+    // Query with firebase
+    const q = query(colRef, 
+      // where('title','==','Bike'), where('price','==',15000)
+      orderBy('price', 'desc')
+      );    
+    onSnapshot(q, (snapshot)=>{
       snapshot.docs.map((doc)=>{
         console.log(doc.data())
       });
